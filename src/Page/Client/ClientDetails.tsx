@@ -510,7 +510,7 @@ setClientAvailment((prev: any) => {
       handleOpen={() => {}}
       handleDelete={() => {}}
       headerName="Client Management"
-      addButtonName="Add Client"
+      addButtonName="Add Client this"
       totalPages={10}
     />
   </Paper>
