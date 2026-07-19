@@ -1,5 +1,4 @@
 import type { IClientRequest } from "../../Interface/IClientRequest.interface";
-import type { IUser } from "../../Interface/User/IUser.interface";
 import type { IUserDetails } from "../../Page/User/interface/IUser.interface";
 import { Client } from "../AxosService";
 

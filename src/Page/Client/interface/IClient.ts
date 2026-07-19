@@ -12,3 +12,7 @@ export interface IAvailmentDetails {
   [key: string]: any;
 
 }
+export interface IGeneralInfo {
+  [key: string]: any;
+
+}

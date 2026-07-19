@@ -51,7 +51,7 @@ export default function ReusableTablev3({
   handleSortChange,
   data,
   handleEdit,
-  handleDelete,
+  handleSave,
   IdName,
 }: IReusableTableProps) {
   const [selectedItems, setSelectedItems] = useState<unknown[]>([]);
@@ -67,27 +67,32 @@ export default function ReusableTablev3({
   const renderCell = (row: any, col: any) => {
     switch (col.Key) {
       case "amountToPaid":
-      return row.availmentDetailId === undefined  || row.status === "Unpaid" ? (
-        <TextField
-          type="number"
-          size="small"
-          value={row.amountToPaid ?? ""}
-          onChange={(e) =>
-            handleEdit?.({
-              ...row,
-              amountToPaid: e.target.value
-                ? Number(e.target.value)
-                : undefined,
-            })
-          }
-          fullWidth
-        />
+      return row.availmentDetailId === undefined   ? (
+         <TextField
+    type="number"
+    size="small"
+    value={row.amountToPaid ?? ""}
+    onChange={(e) =>
+      handleEdit?.({
+        ...row,
+        amountToPaid:
+          e.target.value === ""
+            ? undefined
+            : Number(e.target.value),
+      })
+    }
+    fullWidth
+  />
       ) : (
-        String(row.amountToPaid ?? "")
+        String(new Intl.NumberFormat("en-PH", {
+          style: "currency",
+          currency: "PHP",
+          minimumFractionDigits: 2,
+        }).format(row.amountToPaid) ?? "")
       );
 
       case "schedulePaymentDate":
-        return (
+        return row.status === "Unpaid" ? (
           <TextField
             type="date"
             size="small"
@@ -101,42 +106,60 @@ export default function ReusableTablev3({
             InputLabelProps={{ shrink: true }}
             fullWidth
           />
-        );
+        ) : (
+        String(row.schedulePaymentDate ?? "")
+      );;
 
       case "actualAmountPaid":
-        return (
-          <TextField
-            type="number"
-            size="small"
-            value={row.actualAmountPaid ?? ""}
-            onChange={(e) =>
-              handleEdit?.({
-                ...row,
-                actualAmountPaid: e.target.value
-                  ? Number(e.target.value)
-                  : undefined,
-              })
-            }
-            fullWidth
-          />
-        );
+        return row.status === "Unpaid" ? (
+  <TextField
+    type="number"
+    size="small"
+    value={row.actualAmountPaid ?? ""}
+    onChange={(e) =>
+      handleEdit?.({
+        ...row,
+        actualAmountPaid:
+          e.target.value === ""
+            ? undefined
+            : Number(e.target.value),
+      })
+    }
+    fullWidth
+    
+  />
+) : (
+  new Intl.NumberFormat("en-PH", {
+    style: "currency",
+    currency: "PHP",
+    minimumFractionDigits: 2,
+  }).format(row.actualAmountPaid ?? 0)
+);
 
-      case "acutualDatePaid": // ✅ fixed typo
-        return (
+      case "actualDatePaid": // ✅ fixed typo
+        return row.status === "Unpaid" ?  (
           <TextField
-            type="date"
-            size="small"
-            value={row.actualDatePaid || ""}
-            onChange={(e) =>
-              handleEdit?.({
-                ...row,
-                actualDatePaid: e.target.value,
-              })
-            }
-            InputLabelProps={{ shrink: true }}
-            fullWidth
-          />
-        );
+  type="date"
+  size="small"
+  value={
+    row.actualDatePaid &&
+    row.actualDatePaid !== "0001-01-01" &&
+    !isNaN(new Date(row.actualDatePaid).getTime())
+      ? row.actualDatePaid
+      : ""
+  }
+  onChange={(e) =>
+    handleEdit?.({
+      ...row,
+      actualDatePaid: e.target.value,
+    })
+  }
+  InputLabelProps={{ shrink: true }}
+  fullWidth
+/>
+        ): (
+        String(row.actualDatePaid ?? "")
+      );;;
 
       default:
         return col.render
@@ -211,7 +234,7 @@ export default function ReusableTablev3({
                   <StyledTableCell align="center">
                     <Tooltip title="Print">
                       <IconButton
-                        onClick={() => handleEdit?.(row)}
+                        // onClick={() => handleSave?.(row)}
                         sx={{
                           color: "#2563eb",
                           mr: -2,
@@ -226,8 +249,9 @@ export default function ReusableTablev3({
 
                     <Tooltip title="Save">
                       <IconButton
-                        onClick={() => handleDelete?.(row)}
+                        onClick={() => handleSave?.(row)}
                         sx={{
+                          display: row.status === "Paid" ? "none" : "inline-flex",
                           color: "#2563eb",
                           "&:hover": {
                             backgroundColor: "#cae5fc",
