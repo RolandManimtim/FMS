@@ -8,17 +8,16 @@ import ClientDetails from "../../Page/Client/ClientDetails";
 const Router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
-      
-      {/* default page */}
       <Route path="login" element={<Login />} />
-
-      {/* nested routes */}
       <Route path="dashboard" element={<div>Dashboard</div>} />
       <Route path="ClientManagement" element={<Client />} />
       <Route path="UserManagement" element={<User />} />
       <Route path="ClientDetails/:clientId" element={<ClientDetails clientId={0} />} />
     </Route>
-  )
+  ),
+  {
+    basename: "/FMS"
+  }
 );
 
 export default Router;
