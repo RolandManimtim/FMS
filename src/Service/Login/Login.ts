@@ -1,7 +1,5 @@
-import axios from "axios";
 import type { ILogin } from "../../Interface/Login/ILogin.interface";
 import { Client } from "../AxosService";
-import type { userService } from "../User/User";
 
 export interface IUserPayload {
   token: string;

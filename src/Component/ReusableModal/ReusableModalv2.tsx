@@ -20,9 +20,7 @@ const ReusableModalv2: React.FC<Props> = ({
   open,
   title,
   onClose,
-  onSubmit,
   children,
-  submitText,
 }) => {
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xl">

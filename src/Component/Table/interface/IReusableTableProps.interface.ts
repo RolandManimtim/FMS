@@ -9,8 +9,10 @@ export interface IReusableTableProps {
   handleSortChange: (name: string) => void;
   handleSetSearchQuery: (name: string) => void;
   handleSetPage: (pageNumber: number) => void;
-  handleEdit: (row: ITableData) => void;
+  handleEdit?: (row: ITableData) => void;
+  handleSave?: (row: ITableData) => void;
   handleDelete: (row: ITableData) => void;
+  showValidation? : boolean;
   state: IPagination;
   IdName: string;
   customFilters?: ICustomFilters[];

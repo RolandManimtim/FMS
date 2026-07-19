@@ -1,4 +1,4 @@
-import type { IAvailment } from "../../Page/Client/interface/IClient";
+import type { IAvailment, IAvailmentDetails } from "../../Page/Client/interface/IClient";
 import { Client } from "../AxosService";
 
 
@@ -21,9 +21,34 @@ const AvailmentDetails = async (availmentId: number) => {
   );
 };
 
+const CreatePayment = async (data: IAvailmentDetails) => {
+  console.log("Payment to be created in service:", data); // Log the payment object
+  return await Client(
+    {
+      method: "POST",
+      url: "Availment/Payment",
+      data,
+    },
+    "Creating payment..."
+  );
+};
+const TopUp = async (payload: {
+  availmentID: number;
+  topUpAmount: number;
+}) => {
+  return await Client(
+    {
+      method: "GET",
+      url: `Availment/topUp?availmentID=${payload.availmentID}&topUpAmount=${payload.topUpAmount}`,
+    },
+    "Processing loan top-up..."
+  );
+};
 const availmentService = {
     CreateAvailment,
     AvailmentDetails,
+    CreatePayment,
+    TopUp
 };
 
 export { availmentService };

@@ -1,13 +1,9 @@
 
 import {
   Box,
-  Button,
   GlobalStyles,
   IconButton,
-  MenuItem,
-  Pagination,
   Paper,
-  Select,
   styled,
   Table,
   TableBody,
@@ -17,18 +13,13 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-  TextField,
   Tooltip,
-  Typography,
 } from "@mui/material";
 
 
-import { useCallback, useEffect, useState } from "react";
-import { debounce } from "@mui/material/utils";
+import {  useEffect, useState } from "react";
 import type { IReusableTableProps } from "./interface/IReusableTableProps.interface";
 import EditSquareIcon from '@mui/icons-material/EditSquare';
-import FolderDeleteIcon from '@mui/icons-material/FolderDelete';
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 /* ================= THEME CONSTANTS ================= */
@@ -61,28 +52,15 @@ export default function ReusableTable({
   headers,
   state,
   handleSortChange,
-  handleSetPage,
   data,
-  handleSetItemPerPage,
-  handleSetSearchQuery,
   handleEdit,
-  handleOpen,
   handleDelete,
-  addButtonName,
-  totalPages,
   IdName,
   
 }: IReusableTableProps) {
-  const clientHeight = document.documentElement.clientHeight;
 
   const [selectedItems, setSelectedItems] = useState<unknown[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
 
-
-  const debouncedSearch = useCallback(
-    debounce(handleSetSearchQuery, 500),
-    []
-  );
 
   /* ================= HANDLERS ================= */
  
@@ -94,12 +72,6 @@ export default function ReusableTable({
     setSelectedItems(valid);
   }, [data]);
 
-  const startEntry = (state.pageNumber - 1) * state.pageSize + 1;
-
-const endEntry = Math.min(
-  state.pageNumber * state.pageSize,
-  state.recordsTotal
-);
   /* ================= RENDER ================= */
   return (
     <>
